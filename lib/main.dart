@@ -1,3 +1,4 @@
+import 'package:career_guide/views/background/animated_home_background.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -17,7 +18,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
         // fontFamily: "Montserrat"
       ),
-      home: const Text("data"),
+      home: const AnimatedHomeBackground(),
     );
   }
 }
