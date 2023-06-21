@@ -13,6 +13,7 @@ dependencies:
     sdk: flutter
 
   cupertino_icons: ^1.0.2
+  flutter_svg: ^2.0.7
 
 dev_dependencies:
   flutter_test:
@@ -25,14 +26,14 @@ flutter:
   assets:
     - assets/images/
   fonts:
-    - family: Montserrat
+    - family: Urbanist
       fonts:
-        - asset: assets/fonts/Montserrat/Montserrat-Black.ttf
-        - asset: assets/fonts/Montserrat/Montserrat-Bold.ttf
-        - asset: assets/fonts/Montserrat/Montserrat-ExtraBold.ttf
-        - asset: assets/fonts/Montserrat/Montserrat-ExtraLight.ttf
-        - asset: assets/fonts/Montserrat/Montserrat-Light.ttf
-        - asset: assets/fonts/Montserrat/Montserrat-Medium.ttf
-        - asset: assets/fonts/Montserrat/Montserrat-Regular.ttf
-        - asset: assets/fonts/Montserrat/Montserrat-SemiBold.ttf
-        - asset: assets/fonts/Montserrat/Montserrat-Thin.ttf
+        - asset: assets/fonts/Urbanist/Urbanist-Black.ttf
+        - asset: assets/fonts/Urbanist/Urbanist-Bold.ttf
+        - asset: assets/fonts/Urbanist/Urbanist-ExtraBold.ttf
+        - asset: assets/fonts/Urbanist/Urbanist-ExtraLight.ttf
+        - asset: assets/fonts/Urbanist/Urbanist-Light.ttf
+        - asset: assets/fonts/Urbanist/Urbanist-Medium.ttf
+        - asset: assets/fonts/Urbanist/Urbanist-Regular.ttf
+        - asset: assets/fonts/Urbanist/Urbanist-SemiBold.ttf
+        - asset: assets/fonts/Urbanist/Urbanist-Thin.ttf
