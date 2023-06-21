@@ -117,35 +117,37 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
               children: [
                 Stack(
                   alignment: Alignment.center,
-                  children: colors.reversed.toList().asMap().entries.map((e) {
-                    int index = colors.length - e.key - 1;
-                    return AnimatedBuilder(
-                        animation: animationController,
-                        builder: (context, child) {
-                          return FractionalTranslation(
-                            translation: offsetAnimations[index].value,
-                            child: Transform.scale(
-                              scale: scaleAnimations[index].value,
-                              child: Opacity(
-                                  opacity: opacityAnimations[index].value,
-                                  child: child),
-                            ),
-                          );
+                  children: [
+                    TextButton(
+                        onPressed: () {
+                          _restartAnimation();
                         },
-                        child: CardItem(
-                          color: colors[index],
-                          animationCompleted: animationCompleted,
-                          isDisplayed: displayed.contains(colors[index]),
-                          onCardSwipped: _scaleNext,
-                          onCardSwipAnimationComplete: _changeCurrentColor,
-                        ));
-                  }).toList(),
-                ),
-                TextButton(
-                    onPressed: () {
-                      _restartAnimation();
-                    },
-                    child: Text("Restart"))
+                        child: const Text("Restart")),
+                    ...colors.reversed.toList().asMap().entries.map((e) {
+                      int index = colors.length - e.key - 1;
+                      return AnimatedBuilder(
+                          animation: animationController,
+                          builder: (context, child) {
+                            return FractionalTranslation(
+                              translation: offsetAnimations[index].value,
+                              child: Transform.scale(
+                                scale: scaleAnimations[index].value,
+                                child: Opacity(
+                                    opacity: opacityAnimations[index].value,
+                                    child: child),
+                              ),
+                            );
+                          },
+                          child: CardItem(
+                            color: colors[index],
+                            animationCompleted: animationCompleted,
+                            isDisplayed: displayed.contains(colors[index]),
+                            onCardSwipped: _scaleNext,
+                            onCardSwipAnimationComplete: _changeCurrentColor,
+                          ));
+                    }).toList()
+                  ],
+                )
               ],
             ),
           ),
