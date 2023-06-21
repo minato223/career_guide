@@ -118,11 +118,13 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                 Stack(
                   alignment: Alignment.center,
                   children: [
-                    TextButton(
-                        onPressed: () {
-                          _restartAnimation();
-                        },
-                        child: const Text("Restart")),
+                    animationCompleted
+                        ? TextButton(
+                            onPressed: () {
+                              _restartAnimation();
+                            },
+                            child: const Text("Restart"))
+                        : const SizedBox(),
                     ...colors.reversed.toList().asMap().entries.map((e) {
                       int index = colors.length - e.key - 1;
                       return AnimatedBuilder(
@@ -179,6 +181,7 @@ class CardItem extends StatefulWidget {
   Color color;
   void Function(Color)? onCardSwipped;
   void Function(Color)? onCardSwipAnimationComplete;
+  Function()? onTapCallback;
   bool isDisplayed;
   bool animationCompleted;
   CardItem(
@@ -236,8 +239,11 @@ class _CardItemState extends State<CardItem>
     double blur =
         widget.animationCompleted ? (widget.isDisplayed ? 0 : sigma) : 0;
     return GestureDetector(
-      onTap: () {
-        _removeCard();
+      onTap: widget.onTapCallback,
+      onHorizontalDragEnd: (DragEndDetails details) {
+        if ((details.primaryVelocity != null) && details.primaryVelocity! < 0) {
+          _removeCard();
+        }
       },
       child: SizedBox(
         child: Stack(
