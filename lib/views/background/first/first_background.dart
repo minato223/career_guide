@@ -1,8 +1,8 @@
 // ignore_for_file: must_be_immutable
 
-import 'dart:math';
-
 import 'package:career_guide/constants/app_sizes.dart';
+import 'package:career_guide/views/background/first/animated_home_background_animation.dart';
+import 'package:career_guide/views/background/first/card_placeholder.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -30,6 +30,7 @@ class FirstBackground extends StatelessWidget {
             return Stack(
               children: [
                 Positioned(
+                  height: size.HEIGHT * .14,
                   left: -(titleFontSize / 3) -
                       (size.WIDTH *
                           animatedHomeBackgroundAnimation
@@ -37,14 +38,16 @@ class FirstBackground extends StatelessWidget {
                   child: Opacity(
                     opacity: _getOpacity(
                         animatedHomeBackgroundAnimation.headerAnimation.value),
-                    child: Text(
-                      "CAREER",
-                      style: TextStyle(
-                          fontSize: titleFontSize, color: Colors.white24),
+                    child: const FittedBox(
+                      child: Text(
+                        "CAREER",
+                        style: TextStyle(color: Colors.white30),
+                      ),
                     ),
                   ),
                 ),
                 Positioned(
+                  height: size.HEIGHT * .14,
                   top: titleFontSize * 1.1,
                   right: -titleFontSize / 3 -
                       (size.WIDTH *
@@ -53,15 +56,16 @@ class FirstBackground extends StatelessWidget {
                   child: Opacity(
                     opacity: _getOpacity(
                         animatedHomeBackgroundAnimation.headerAnimation.value),
-                    child: Text(
-                      "GUIDE",
-                      style: TextStyle(
-                          fontSize: titleFontSize, color: Colors.white24),
+                    child: const FittedBox(
+                      child: Text(
+                        "GUIDE",
+                        style: TextStyle(color: Colors.white30),
+                      ),
                     ),
                   ),
                 ),
                 Positioned(
-                  top: titleFontSize * .17 +
+                  top: titleFontSize * .12 +
                       ((-titleFontSize * 2) *
                           animatedHomeBackgroundAnimation
                               .headerAnimation.value),
@@ -74,7 +78,7 @@ class FirstBackground extends StatelessWidget {
                       padding:
                           EdgeInsets.symmetric(horizontal: titleFontSize * .08),
                       decoration: BoxDecoration(
-                          border: Border.all(color: Colors.white54, width: 2),
+                          border: Border.all(color: Colors.white70, width: 2),
                           borderRadius: BorderRadius.circular(25)),
                       child: Icon(
                         CupertinoIcons.search,
@@ -131,65 +135,5 @@ class FirstBackground extends StatelessWidget {
         ),
       ),
     );
-  }
-}
-
-class CardPlaceholder extends StatelessWidget {
-  double titleFontSize;
-  double translateX;
-  double translateY;
-  double rotateZ;
-  double rotateX;
-  CardPlaceholder(
-      {required this.titleFontSize,
-      required this.translateX,
-      required this.rotateX,
-      required this.rotateZ,
-      required this.translateY,
-      super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    AppSizes size = AppSizes(context);
-    return Container(
-      transformAlignment: Alignment.center,
-      transform: Matrix4.identity()
-        ..setEntry(3, 2, .001)
-        ..translate(
-          size.WIDTH * translateX,
-          (size.HEIGHT * translateY),
-        )
-        ..rotateX(pi * (-rotateX))
-        ..rotateZ(pi * (-rotateZ))
-        ..rotateY(pi * (-.05)),
-      height: size.WIDTH * 1.2,
-      width: size.WIDTH * .85,
-      decoration: BoxDecoration(
-          color: Colors.white12,
-          border: Border.all(
-              color: const Color.fromARGB(15, 255, 255, 255), width: 3),
-          borderRadius: BorderRadius.circular(titleFontSize * .6)),
-    );
-  }
-}
-
-class AnimatedHomeBackgroundAnimation {
-  AnimationController controller;
-  late Animation<double> firstBoxAnimation;
-  late Animation<double> secondBoxAnimation;
-  late Animation<double> thirdBoxAnimation;
-  late Animation<double> headerAnimation;
-  AnimatedHomeBackgroundAnimation(this.controller) {
-    headerAnimation = getDoubleAnimation(begin: 0, end: .8);
-    firstBoxAnimation = getDoubleAnimation(begin: .1, end: .8);
-    secondBoxAnimation = getDoubleAnimation(begin: .3, end: 1);
-    thirdBoxAnimation = getDoubleAnimation(begin: .5, end: 1);
-  }
-
-  Animation<double> getDoubleAnimation(
-      {required double begin, required double end}) {
-    return Tween<double>(begin: 1, end: 0).animate(CurvedAnimation(
-        parent: controller,
-        curve: Interval(begin, end, curve: Curves.easeOut)));
   }
 }
