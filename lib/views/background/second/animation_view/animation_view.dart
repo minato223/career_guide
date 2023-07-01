@@ -1,16 +1,18 @@
-// ignore_for_file: non_constant_identifier_names
+// ignore_for_file: non_constant_identifier_names, must_be_immutable
 
-import 'package:career_guide/views/second_card_animation.dart';
+import 'package:career_guide/views/background/second/animation_view/animation_view_controller.dart';
+import 'package:career_guide/views/background/second/animation_view/second_card_animation/second_card_animation.dart';
 import 'package:flutter/material.dart';
 
 class AnimationView extends StatefulWidget {
-  const AnimationView({super.key});
+  AnimationViewController? controller;
+  AnimationView({super.key, this.controller});
 
   @override
-  State<AnimationView> createState() => _AnimationViewState();
+  State<AnimationView> createState() => AnimationViewState();
 }
 
-class _AnimationViewState extends State<AnimationView>
+class AnimationViewState extends State<AnimationView>
     with TickerProviderStateMixin {
   late AnimationController _1appearAnimationController;
   late AnimationController _1disappearAnimationController;
@@ -22,6 +24,7 @@ class _AnimationViewState extends State<AnimationView>
   @override
   void initState() {
     super.initState();
+    widget.controller?.setState(this);
     _1appearAnimationController =
         AnimationController(vsync: this, duration: _duration);
     _1disappearAnimationController =
@@ -30,7 +33,6 @@ class _AnimationViewState extends State<AnimationView>
         AnimationController(vsync: this, duration: _duration);
     _2disappearAnimationController =
         AnimationController(vsync: this, duration: _duration);
-    _2appearAnimationController.forward();
     _1appearAnimationController.addListener(() {
       if (_1appearAnimationController.status == AnimationStatus.completed) {
         _2appearAnimationController.reset();
@@ -45,7 +47,16 @@ class _AnimationViewState extends State<AnimationView>
     });
   }
 
-  _animate() {
+  forward() {
+    _2appearAnimationController.forward();
+  }
+
+  dismiss() {
+    _1appearAnimationController.reverse();
+    _2appearAnimationController.reverse();
+  }
+
+  animate() {
     if (_2appearAnimationController.status == AnimationStatus.completed) {
       _2disappearAnimationController.forward();
       _1appearAnimationController.forward();
@@ -58,28 +69,20 @@ class _AnimationViewState extends State<AnimationView>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.blueGrey,
-      body: Column(
+    return Material(
+      color: Colors.transparent,
+      child: Stack(
         children: [
-          Expanded(
-            child: Align(
-              alignment: Alignment.center,
-              child: Stack(
-                children: [
-                  SecondCardAnimation(
-                      appearAnimationController: _1appearAnimationController,
-                      disappearAnimationController:
-                          _1disappearAnimationController),
-                  SecondCardAnimation(
-                      appearAnimationController: _2appearAnimationController,
-                      disappearAnimationController:
-                          _2disappearAnimationController),
-                ],
-              ),
-            ),
+          SecondCardAnimation(
+            appearAnimationController: _1appearAnimationController,
+            disappearAnimationController: _1disappearAnimationController,
+            heroTagDiff: 10,
           ),
-          TextButton(onPressed: _animate, child: Text("Change"))
+          SecondCardAnimation(
+            appearAnimationController: _2appearAnimationController,
+            disappearAnimationController: _2disappearAnimationController,
+            heroTagDiff: 20,
+          ),
         ],
       ),
     );

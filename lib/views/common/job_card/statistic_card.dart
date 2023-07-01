@@ -43,6 +43,7 @@ class StatisticCard extends StatelessWidget {
                     fill ? AppColors.darkenColor(AppColors.yellow, .3) : null),
           ),
           XSpace(size.CONTENT_SPACE * 1.5).y,
+          const Spacer(),
           Text(
             content,
             style: theme.bodyLarge!

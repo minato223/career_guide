@@ -105,78 +105,83 @@ class _JobDetailState extends State<JobDetail> {
                           style: theme.titleLarge,
                         ),
                         XSpace(size.CONTENT_SPACE).y,
-                        Text(
-                          "Enim esse magna laboris est. Dolore ad ipsum nisi excepteur excepteur elit quis magna cillum. Labore ad nisi enim incididunt dolor veniam sint sint et veniam proident eiusmod. Do occaecat minim officia enim consectetur voluptate et deserunt. Tempor minim reprehenderit elit labore nisi. Ex consequat sunt cillum labore sit commodo incididunt in officia cupidatat ea tempor consectetur. Et officia irure ullamco sunt eiusmod eiusmod cupidatat tempor fugiat veniam laborum ipsum dolore.",
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 4,
-                          style: theme.bodyLarge,
-                        ),
-                        XSpace(size.CONTENT_SPACE).y,
                         Expanded(
+                          flex: 3,
+                          child: Text(
+                            "Enim esse magna laboris est. Dolore ad ipsum nisi excepteur excepteur elit quis magna cillum. Labore ad nisi enim incididunt dolor veniam sint sint et veniam proident eiusmod. Do occaecat minim officia enim consectetur voluptate et deserunt. Tempor minim reprehenderit elit labore nisi. Ex consequat sunt cillum labore sit commodo incididunt in officia cupidatat ea tempor consectetur. Et officia irure ullamco sunt eiusmod eiusmod cupidatat tempor fugiat veniam laborum ipsum dolore.",
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 4,
+                            style: theme.bodyLarge,
+                          ),
+                        ),
+                        Expanded(
+                            flex: 10,
                             child: Row(
-                          children: [
-                            Expanded(
-                                flex: 1,
-                                child: Column(
-                                  children: [
-                                    Expanded(
-                                        flex: 1,
-                                        child: mino(
-                                            title: "120k-140k",
-                                            subtitle: "Salary",
-                                            fill: true)),
-                                    XSpace(size.CONTENT_SPACE / 2).y,
-                                    Expanded(
-                                        flex: 1,
-                                        child: mino(
-                                            title: "148",
-                                            subtitle: "Reviews",
-                                            fill: false)),
-                                    XSpace(size.CONTENT_SPACE / 2).y,
-                                    Expanded(
-                                        flex: 1,
-                                        child: mino(
-                                            title: "full-time",
-                                            subtitle: "Job",
-                                            fill: false))
-                                  ],
-                                )),
-                            XSpace(size.CONTENT_SPACE / 2).x,
-                            Expanded(
-                                flex: 1,
-                                child: Stack(
-                                  children: [
-                                    Container(
-                                      padding:
-                                          EdgeInsets.all(size.CONTENT_SPACE),
-                                      decoration: BoxDecoration(
-                                          image: const DecorationImage(
-                                              image: AssetImage(AppImages.map),
-                                              fit: BoxFit.cover),
-                                          color: Colors.white,
-                                          borderRadius:
-                                              BorderRadius.circular(20),
-                                          boxShadow: const [
-                                            BoxShadow(
-                                                color:
-                                                    Color.fromARGB(30, 0, 0, 0),
-                                                blurRadius: 10,
-                                                spreadRadius: 1,
-                                                offset: Offset.zero)
-                                          ]),
-                                    ),
-                                    Positioned(
-                                        top: size.WIDTH * .25,
-                                        right: size.WIDTH * .1,
-                                        child: Icon(
-                                          CupertinoIcons.location_solid,
-                                          color: AppColors.yellow,
-                                          size: theme.headlineLarge!.fontSize!,
-                                        ))
-                                  ],
-                                ))
-                          ],
-                        )),
+                              children: [
+                                Expanded(
+                                    flex: 1,
+                                    child: Column(
+                                      children: [
+                                        Expanded(
+                                            flex: 1,
+                                            child: mino(
+                                                title: "120k-140k",
+                                                subtitle: "Salary",
+                                                fill: true)),
+                                        XSpace(size.CONTENT_SPACE / 2).y,
+                                        Expanded(
+                                            flex: 1,
+                                            child: mino(
+                                                title: "148",
+                                                subtitle: "Reviews",
+                                                fill: false)),
+                                        XSpace(size.CONTENT_SPACE / 2).y,
+                                        Expanded(
+                                            flex: 1,
+                                            child: mino(
+                                                title: "full-time",
+                                                subtitle: "Job",
+                                                fill: false))
+                                      ],
+                                    )),
+                                XSpace(size.CONTENT_SPACE / 2).x,
+                                Expanded(
+                                    flex: 1,
+                                    child: Stack(
+                                      children: [
+                                        Container(
+                                          padding: EdgeInsets.all(
+                                              size.CONTENT_SPACE),
+                                          decoration: BoxDecoration(
+                                              image: const DecorationImage(
+                                                  image:
+                                                      AssetImage(AppImages.map),
+                                                  fit: BoxFit.cover),
+                                              color: Colors.white,
+                                              borderRadius:
+                                                  BorderRadius.circular(20),
+                                              boxShadow: const [
+                                                BoxShadow(
+                                                    color: Color.fromARGB(
+                                                        30, 0, 0, 0),
+                                                    blurRadius: 10,
+                                                    spreadRadius: 1,
+                                                    offset: Offset.zero)
+                                              ]),
+                                        ),
+                                        Positioned(
+                                            top: size.WIDTH * .25,
+                                            right: size.WIDTH * .1,
+                                            child: Icon(
+                                              CupertinoIcons.location_solid,
+                                              color: AppColors.yellow,
+                                              size: theme
+                                                  .headlineLarge!.fontSize!,
+                                            ))
+                                      ],
+                                    ))
+                              ],
+                            )),
                         XSpace(size.CONTENT_SPACE).y,
                         IntrinsicHeight(
                           child: Row(
@@ -233,13 +238,15 @@ class _JobDetailState extends State<JobDetail> {
                             ],
                           ),
                         ),
-                        Align(
-                          alignment: Alignment.center,
-                          child: Container(
-                              margin: EdgeInsets.symmetric(
-                                  vertical: size.CONTENT_SPACE * 1.5),
+                        Expanded(
+                          flex: 3,
+                          child: Center(
+                            child: SizedBox(
+                              height: size.HEIGHT * .07,
                               child: AppButton(
-                                  text: "APPLY", width: size.WIDTH * .4)),
+                                  text: "APPLY", width: size.WIDTH * .4),
+                            ),
+                          ),
                         ),
                       ],
                     ),
@@ -277,6 +284,7 @@ class _JobDetailState extends State<JobDetail> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Expanded(
+              flex: 3,
               child: FittedBox(
                 child: Text(
                   title,
@@ -284,14 +292,18 @@ class _JobDetailState extends State<JobDetail> {
                 ),
               ),
             ),
-            XSpace(size.CONTENT_SPACE * .2).y,
-            Text(
-              subtitle,
-              style: theme.bodyLarge!.copyWith(
-                  fontWeight: FontWeight.bold,
-                  color: fill
-                      ? AppColors.darkenColor(AppColors.yellow, .3)
-                      : null),
+            Expanded(
+              flex: 1,
+              child: FittedBox(
+                child: Text(
+                  subtitle,
+                  style: theme.bodyLarge!.copyWith(
+                      fontWeight: FontWeight.bold,
+                      color: fill
+                          ? AppColors.darkenColor(AppColors.yellow, .3)
+                          : null),
+                ),
+              ),
             )
           ],
         ),

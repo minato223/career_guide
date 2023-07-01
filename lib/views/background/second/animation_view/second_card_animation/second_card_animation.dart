@@ -3,6 +3,9 @@
 import 'dart:math';
 import 'dart:ui';
 
+import 'package:career_guide/Utils/number.dart';
+import 'package:career_guide/constants/app_sizes.dart';
+import 'package:career_guide/views/common/job_card/job_card.dart';
 import 'package:flutter/material.dart';
 
 List<Color> appColors = [
@@ -17,10 +20,12 @@ List<Color> appColors = [
 class SecondCardAnimation extends StatefulWidget {
   AnimationController appearAnimationController;
   AnimationController disappearAnimationController;
+  int heroTagDiff;
   SecondCardAnimation(
       {super.key,
       required this.appearAnimationController,
-      required this.disappearAnimationController});
+      required this.disappearAnimationController,
+      required this.heroTagDiff});
 
   @override
   State<SecondCardAnimation> createState() => _SecondCardAnimationState();
@@ -30,7 +35,7 @@ class _SecondCardAnimationState extends State<SecondCardAnimation> {
   List<Color> colors = [...appColors];
   final List<Animation<double>> _appearAnimations = [];
   final List<Animation<double>> _disappearAnimations = [];
-  final int _selectedIndex = 0;
+  // final int _selectedIndex = 0;
   @override
   void initState() {
     super.initState();
@@ -56,12 +61,9 @@ class _SecondCardAnimationState extends State<SecondCardAnimation> {
     }
   }
 
-  _getReverse(double value) {
-    return (value - 1) * (-1);
-  }
-
   @override
   Widget build(BuildContext context) {
+    AppSizes size = AppSizes(context);
     return AnimatedBuilder(
       animation: widget.disappearAnimationController,
       builder: (context, child) {
@@ -83,24 +85,17 @@ class _SecondCardAnimationState extends State<SecondCardAnimation> {
                           ..scale(_appearAnimations[index].value)
                           ..translate(
                               (_disappearAnimations[index].value * 300),
-                              (index * 80.0),
-                              (_getReverse(_disappearAnimations[index].value) *
+                              (index * size.HEIGHT * .08),
+                              (getReverse(_disappearAnimations[index].value) *
                                   40))
                           ..rotateY(
                               (pi * .5) * _disappearAnimations[index].value)
                           ..rotateX(
                               (-pi * .1) * _disappearAnimations[index].value),
-                        height: 300,
-                        width: 200,
-                        decoration: const BoxDecoration(
-                            color: Colors.white,
-                            boxShadow: [
-                              BoxShadow(
-                                  color: Colors.black12,
-                                  offset: Offset.zero,
-                                  blurRadius: 10,
-                                  spreadRadius: 10)
-                            ]),
+                        child: JobCard(
+                          id: index + widget.heroTagDiff,
+                          isRecentView: true,
+                        ),
                       ),
                     ),
                     Positioned.fill(

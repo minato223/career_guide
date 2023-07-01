@@ -7,6 +7,7 @@ import 'package:career_guide/views/common/badge_buttons/badge_buttons.dart';
 import 'package:career_guide/views/common/job_card/job_map_gradient.dart';
 import 'package:career_guide/views/common/job_card/statistic_card.dart';
 import 'package:career_guide/widgets/app_button.dart';
+import 'package:career_guide/widgets/app_outlined_button.dart';
 import 'package:career_guide/widgets/text_avatar_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:career_guide/constants/app_colors.dart';
@@ -15,42 +16,57 @@ import 'package:flutter/cupertino.dart';
 
 class JobCard extends StatelessWidget {
   int id;
-  JobCard({super.key, required this.id});
+  bool? isRecentView;
+  JobCard({super.key, required this.id, this.isRecentView});
 
   @override
   Widget build(BuildContext context) {
     TextTheme theme = Theme.of(context).textTheme;
     AppSizes size = AppSizes(context);
+    bool isRecent = isRecentView == true;
     return Hero(
       tag: "home_job$id",
       child: Container(
-        padding: EdgeInsets.all(size.CONTENT_SPACE * 1.3),
-        height: size.HEIGHT * .65,
-        width: size.WIDTH * .8,
+        padding: EdgeInsets.all(size.CONTENT_SPACE * (!isRecent ? 1.3 : 1)),
+        height: !isRecent ? size.HEIGHT * .65 : size.HEIGHT * .55,
+        width: !isRecent ? size.WIDTH * .8 : null,
         decoration: BoxDecoration(
-            color: AppColors.white, borderRadius: BorderRadius.circular(40)),
+            color: AppColors.white,
+            borderRadius: BorderRadius.circular(40),
+            boxShadow: isRecent
+                ? const [
+                    BoxShadow(
+                        color: Color.fromARGB(30, 0, 0, 0),
+                        spreadRadius: 1,
+                        offset: Offset.zero,
+                        blurRadius: 10)
+                  ]
+                : null),
         child: Stack(
           children: [
             Align(
               alignment: Alignment.bottomCenter,
               child: Stack(
                 children: [
-                  Image.asset(
-                    AppImages.map,
-                    width: double.infinity,
-                    height: size.HEIGHT * .25,
-                    fit: BoxFit.cover,
-                  ),
-                  JobMapGradient(symmetric: JobMapGradientSymmetric.horizontal),
-                  JobMapGradient(symmetric: JobMapGradientSymmetric.vertical),
-                  Positioned(
-                      bottom: size.WIDTH * .25,
-                      right: size.WIDTH * .1,
-                      child: Icon(
-                        CupertinoIcons.location_solid,
-                        color: AppColors.yellow,
-                        size: theme.headlineLarge!.fontSize!,
-                      ))
+                  if (!isRecent) ...[
+                    Image.asset(
+                      AppImages.map,
+                      width: double.infinity,
+                      height: size.HEIGHT * .25,
+                      fit: BoxFit.cover,
+                    ),
+                    JobMapGradient(
+                        symmetric: JobMapGradientSymmetric.horizontal),
+                    JobMapGradient(symmetric: JobMapGradientSymmetric.vertical),
+                    Positioned(
+                        bottom: size.WIDTH * .25,
+                        right: size.WIDTH * .1,
+                        child: Icon(
+                          CupertinoIcons.location_solid,
+                          color: AppColors.yellow,
+                          size: theme.headlineLarge!.fontSize!,
+                        ))
+                  ],
                 ],
               ),
             ),
@@ -86,42 +102,49 @@ class JobCard extends StatelessWidget {
                   style: theme.bodyLarge,
                 ),
                 XSpace(size.CONTENT_SPACE).y,
-                Row(
-                  children: [
-                    Expanded(
-                        flex: 1,
-                        child: StatisticCard(
-                            title: "120k+",
-                            subtitle: "Salary",
-                            content: "Increase every six mouth",
-                            fill: true)),
-                    XSpace(size.CONTENT_SPACE * .5).x,
-                    Expanded(
-                        flex: 1,
-                        child: StatisticCard(
-                            title: "148",
-                            subtitle: "Reviews",
-                            content: "Reviews from workers",
-                            fill: false))
-                  ],
+                IntrinsicHeight(
+                  child: Row(
+                    children: [
+                      Expanded(
+                          flex: 1,
+                          child: StatisticCard(
+                              title: "120k+",
+                              subtitle: "Salary",
+                              content: "Increase every six mouth",
+                              fill: true)),
+                      XSpace(size.CONTENT_SPACE * .5).x,
+                      Expanded(
+                          flex: 1,
+                          child: StatisticCard(
+                              title: "148",
+                              subtitle: "Reviews",
+                              content: "Reviews from workers",
+                              fill: false))
+                    ],
+                  ),
                 ),
-                const Spacer(),
-                Row(
-                  children: [
-                    BadgeButtons(
-                      radius: size.WIDTH * .12,
-                      color: Colors.grey[500],
-                      iconColor: AppColors.white,
-                      items: [
-                        BadgeButtonItem(
-                            icon: CupertinoIcons.bookmark, onTap: () {}),
-                        BadgeButtonItem(icon: CupertinoIcons.bell, onTap: () {})
-                      ],
-                    ),
-                    const Spacer(),
-                    AppButton(text: "APPLY", width: size.WIDTH * .4),
-                  ],
-                )
+                const Expanded(child: SizedBox()),
+                // const Spacer(),
+                if (isRecent) AppOutlinedButton(text: "YOU APPLIED"),
+                if (!isRecent) ...[
+                  Row(
+                    children: [
+                      BadgeButtons(
+                        radius: size.WIDTH * .12,
+                        color: Colors.grey[500],
+                        iconColor: AppColors.white,
+                        items: [
+                          BadgeButtonItem(
+                              icon: CupertinoIcons.bookmark, onTap: () {}),
+                          BadgeButtonItem(
+                              icon: CupertinoIcons.bell, onTap: () {})
+                        ],
+                      ),
+                      const Spacer(),
+                      AppButton(text: "APPLY", width: size.WIDTH * .4),
+                    ],
+                  )
+                ]
               ],
             ),
           ],

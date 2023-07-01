@@ -16,7 +16,11 @@ List<Color> appColors = [
 
 class HomeCardAnimations extends StatefulWidget {
   AnimationController backgroundAnimationController;
-  HomeCardAnimations({super.key, required this.backgroundAnimationController});
+  AnimationController controller;
+  HomeCardAnimations(
+      {super.key,
+      required this.backgroundAnimationController,
+      required this.controller});
 
   @override
   State<HomeCardAnimations> createState() => _HomeCardAnimationsState();
@@ -24,32 +28,34 @@ class HomeCardAnimations extends StatefulWidget {
 
 class _HomeCardAnimationsState extends State<HomeCardAnimations>
     with SingleTickerProviderStateMixin {
-  late AnimationController animationController;
-  List<Animation<Offset>> offsetAnimations = [];
-  List<Animation<double>> opacityAnimations = [];
-  List<Animation<double>> scaleAnimations = [];
+  late Animation<Offset> _offsetAnimations;
+  late Animation<double> _opacityAnimations;
+  late Animation<double> _scaleAnimations;
   List<Color> colors = [];
   List<Color> displayed = [];
-  bool animationCompleted = false;
 
   @override
   void initState() {
     super.initState();
     colors = [...appColors];
     displayed = [appColors[0]];
-    animationController = AnimationController(
-      vsync: this,
-      duration: const Duration(seconds: 2),
-    );
+    // _controller = AnimationController(
+    //   vsync: this,
+    //   duration: const Duration(seconds: 2),
+    // );
     _setupAnimations();
-    _startAnimations();
-    animationController.addListener(() {
-      if (animationController.status == AnimationStatus.completed) {
-        setState(() {
-          animationCompleted = true;
-        });
-      }
-    });
+    // widget.backgroundAnimationController.addListener(() {
+    //   if (widget.backgroundAnimationController.status ==
+    //       AnimationStatus.completed) {
+    //   }
+    //   if (widget.backgroundAnimationController.status ==
+    //           AnimationStatus.reverse &&
+    //       animationCompleted) {
+    //     setState(() {
+    //       animationCompleted = false;
+    //     });
+    //   }
+    // });
   }
 
   void _setupAnimations() {
@@ -58,29 +64,22 @@ class _HomeCardAnimationsState extends State<HomeCardAnimations>
       double delayStart = (i.toDouble() * (ratio / 2));
       double delayEnd = .5 + (i * (.5 / colors.length));
       var curve = CurvedAnimation(
-        parent: animationController,
+        parent: widget.controller,
         curve: Interval(delayStart, delayEnd, curve: Curves.easeOut),
       );
-      final animation = Tween<Offset>(
-        begin: const Offset(.8, 0.0),
-        end: Offset.zero,
+      _offsetAnimations = Tween<Offset>(
+        begin: Offset.zero,
+        end: const Offset(.8, 0.0),
       ).animate(curve);
-      final animation2 = Tween<double>(
-        begin: 0,
-        end: 1,
+      _opacityAnimations = Tween<double>(
+        begin: 1,
+        end: 0,
       ).animate(curve);
-      final animation3 = Tween<double>(
-        begin: .4,
-        end: 1,
+      _scaleAnimations = Tween<double>(
+        begin: 1,
+        end: .4,
       ).animate(curve);
-      offsetAnimations.add(animation);
-      opacityAnimations.add(animation2);
-      scaleAnimations.add(animation3);
     }
-  }
-
-  void _startAnimations() {
-    animationController.forward();
   }
 
   _changeCurrentColor(Color color) {
@@ -102,10 +101,9 @@ class _HomeCardAnimationsState extends State<HomeCardAnimations>
     setState(() {
       colors = [...appColors];
       displayed = [colors[0]];
-      animationCompleted = false;
     });
-    animationController.reset();
-    animationController.forward();
+    // _controller.reset();
+    // _controller.forward();
   }
 
   _goToDetail(int id) {
@@ -126,71 +124,55 @@ class _HomeCardAnimationsState extends State<HomeCardAnimations>
   Widget build(BuildContext context) {
     AppSizes size = AppSizes(context);
     TextTheme theme = Theme.of(context).textTheme;
-    return Align(
-      alignment: Alignment.center,
-      child: SizedBox(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
+    return AnimatedBuilder(
+        animation: widget.controller,
+        builder: (context, child) {
+          return FractionalTranslation(
+            translation: _offsetAnimations.value,
+            child: Transform.scale(
+              scale: _scaleAnimations.value,
+              child: Opacity(opacity: _opacityAnimations.value, child: child),
+            ),
+          );
+        },
+        child: Stack(
+          alignment: Alignment.center,
           children: [
-            Stack(
-              alignment: Alignment.center,
-              children: [
-                if (animationCompleted)
-                  SizedBox(
-                    height: size.HEIGHT * .65,
-                    width: size.WIDTH * .8,
-                    child: GestureDetector(
-                      onTap: () {
-                        _restartAnimation();
-                      },
-                      child: Center(
-                        child: Container(
-                            padding: EdgeInsets.all(size.CONTENT_SPACE * 2),
-                            decoration: BoxDecoration(
-                                color: Colors.white70,
-                                borderRadius: BorderRadius.circular(20)),
-                            child: Icon(
-                              CupertinoIcons.refresh,
-                              color: AppColors.dark,
-                              size: theme.headlineLarge!.fontSize,
-                            )),
-                      ),
-                    ),
-                  )
-                else
-                  const SizedBox(),
-                ...colors.reversed.toList().asMap().entries.map((e) {
-                  int index = colors.length - e.key - 1;
-                  return AnimatedBuilder(
-                      animation: animationController,
-                      builder: (context, child) {
-                        return FractionalTranslation(
-                          translation: offsetAnimations[index].value,
-                          child: Transform.scale(
-                            scale: scaleAnimations[index].value,
-                            child: Opacity(
-                                opacity: opacityAnimations[index].value,
-                                child: child),
-                          ),
-                        );
-                      },
-                      child: CardItem(
-                        color: colors[index],
-                        index: index,
-                        animationCompleted: animationCompleted,
-                        isDisplayed: displayed.contains(colors[index]),
-                        onCardSwipped: _scaleNext,
-                        onTapCallback: () {
-                          _goToDetail(index);
-                        },
-                        onCardSwipAnimationComplete: _changeCurrentColor,
-                      ));
-                }).toList()
-              ],
-            )
+            SizedBox(
+              height: size.HEIGHT * .65,
+              width: size.WIDTH * .8,
+              child: GestureDetector(
+                onTap: () {
+                  _restartAnimation();
+                },
+                child: Center(
+                  child: Container(
+                      padding: EdgeInsets.all(size.CONTENT_SPACE * 2),
+                      decoration: BoxDecoration(
+                          color: Colors.white70,
+                          borderRadius: BorderRadius.circular(20)),
+                      child: Icon(
+                        CupertinoIcons.refresh,
+                        color: AppColors.dark,
+                        size: theme.headlineLarge!.fontSize,
+                      )),
+                ),
+              ),
+            ),
+            ...colors.reversed.toList().asMap().entries.map((e) {
+              int index = colors.length - e.key - 1;
+              return CardItem(
+                color: colors[index],
+                index: index,
+                isDisplayed: displayed.contains(colors[index]),
+                onCardSwipped: _scaleNext,
+                onTapCallback: () {
+                  _goToDetail(index);
+                },
+                onCardSwipAnimationComplete: _changeCurrentColor,
+              );
+            }).toList()
           ],
-        ),
-      ),
-    );
+        ));
   }
 }

@@ -14,12 +14,10 @@ class CardItem extends StatefulWidget {
   void Function(Color)? onCardSwipAnimationComplete;
   Function()? onTapCallback;
   bool isDisplayed;
-  bool animationCompleted;
   CardItem(
       {required this.index,
       required this.color,
       required this.isDisplayed,
-      required this.animationCompleted,
       this.onCardSwipped,
       this.onCardSwipAnimationComplete,
       this.onTapCallback,
@@ -65,10 +63,8 @@ class _CardItemState extends State<CardItem>
 
   @override
   Widget build(BuildContext context) {
-    double transformTweenValue =
-        widget.animationCompleted ? (widget.isDisplayed ? 0 : .1) : 0;
-    double scale =
-        widget.animationCompleted ? (widget.isDisplayed ? 1 : beginScale) : 1;
+    double transformTweenValue = widget.isDisplayed ? 0 : .1;
+    double scale = widget.isDisplayed ? 1 : beginScale;
     double blur = 0;
     // double blur =
     //     widget.animationCompleted ? (widget.isDisplayed ? 0 : sigma) : 0;
