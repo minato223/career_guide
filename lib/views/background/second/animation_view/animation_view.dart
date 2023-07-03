@@ -1,5 +1,8 @@
 // ignore_for_file: non_constant_identifier_names, must_be_immutable
 
+import 'dart:ui';
+
+import 'package:career_guide/constants/app_sizes.dart';
 import 'package:career_guide/views/background/second/animation_view/animation_view_controller.dart';
 import 'package:career_guide/views/background/second/animation_view/second_card_animation/second_card_animation.dart';
 import 'package:flutter/material.dart';
@@ -45,6 +48,15 @@ class AnimationViewState extends State<AnimationView>
         _1disappearAnimationController.reset();
       }
     });
+  }
+
+  @override
+  void dispose() {
+    _1appearAnimationController.dispose();
+    _1disappearAnimationController.dispose();
+    _2appearAnimationController.dispose();
+    _2disappearAnimationController.dispose();
+    super.dispose();
   }
 
   forward() {

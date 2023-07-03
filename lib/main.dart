@@ -1,5 +1,7 @@
 import 'package:career_guide/themes/theme_provider.dart';
+import 'package:career_guide/views/job_detail/job_detail.dart';
 import 'package:career_guide/views/menu/menu.dart';
+import 'package:career_guide/widgets/animated_text.dart';
 import 'package:flutter/material.dart';
 
 void main() {

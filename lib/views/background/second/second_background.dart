@@ -14,7 +14,7 @@ class SecondBackground extends StatefulWidget {
 }
 
 class _SecondBackgroundState extends State<SecondBackground>
-    with TickerProviderStateMixin {
+    with SingleTickerProviderStateMixin {
   late AnimationController waveAnimationController;
   late Animation<double> wavePositionAnimation;
   @override
@@ -40,6 +40,12 @@ class _SecondBackgroundState extends State<SecondBackground>
   }
 
   @override
+  void dispose() {
+    waveAnimationController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return AnimatedBuilder(
         animation: widget.animationController,
@@ -61,14 +67,6 @@ class _SecondBackgroundState extends State<SecondBackground>
                   wavePositionAnimation: wavePositionAnimation)
             ],
           );
-          // return Stack(
-          //   children: [
-          //     AnimatedBuilder(
-          //       builder: (context, child) {
-          //       },
-          //     ),
-          //   ],
-          // );
         });
   }
 }

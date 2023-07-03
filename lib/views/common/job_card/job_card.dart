@@ -135,9 +135,17 @@ class JobCard extends StatelessWidget {
                         iconColor: AppColors.white,
                         items: [
                           BadgeButtonItem(
-                              icon: CupertinoIcons.bookmark, onTap: () {}),
+                              child: IconButton(
+                                  onPressed: () {},
+                                  icon: const Icon(
+                                    CupertinoIcons.bookmark,
+                                    color: AppColors.white,
+                                  ))),
                           BadgeButtonItem(
-                              icon: CupertinoIcons.bell, onTap: () {})
+                              child: IconButton(
+                                  onPressed: () {},
+                                  icon: const Icon(CupertinoIcons.bell,
+                                      color: AppColors.white)))
                         ],
                       ),
                       const Spacer(),

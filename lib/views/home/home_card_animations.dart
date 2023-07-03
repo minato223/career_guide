@@ -26,8 +26,7 @@ class HomeCardAnimations extends StatefulWidget {
   State<HomeCardAnimations> createState() => _HomeCardAnimationsState();
 }
 
-class _HomeCardAnimationsState extends State<HomeCardAnimations>
-    with SingleTickerProviderStateMixin {
+class _HomeCardAnimationsState extends State<HomeCardAnimations> {
   late Animation<Offset> _offsetAnimations;
   late Animation<double> _opacityAnimations;
   late Animation<double> _scaleAnimations;
@@ -39,23 +38,7 @@ class _HomeCardAnimationsState extends State<HomeCardAnimations>
     super.initState();
     colors = [...appColors];
     displayed = [appColors[0]];
-    // _controller = AnimationController(
-    //   vsync: this,
-    //   duration: const Duration(seconds: 2),
-    // );
     _setupAnimations();
-    // widget.backgroundAnimationController.addListener(() {
-    //   if (widget.backgroundAnimationController.status ==
-    //       AnimationStatus.completed) {
-    //   }
-    //   if (widget.backgroundAnimationController.status ==
-    //           AnimationStatus.reverse &&
-    //       animationCompleted) {
-    //     setState(() {
-    //       animationCompleted = false;
-    //     });
-    //   }
-    // });
   }
 
   void _setupAnimations() {
@@ -102,8 +85,6 @@ class _HomeCardAnimationsState extends State<HomeCardAnimations>
       colors = [...appColors];
       displayed = [colors[0]];
     });
-    // _controller.reset();
-    // _controller.forward();
   }
 
   _goToDetail(int id) {

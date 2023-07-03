@@ -2,10 +2,12 @@
 
 import 'package:career_guide/Utils/number.dart';
 import 'package:career_guide/constants/app_sizes.dart';
+import 'package:career_guide/views/background/second/animated_date_list/animated_date_list_animation.dart';
 import 'package:career_guide/views/background/second/animated_date_list/animated_date_list_tile.dart';
 import 'package:career_guide/views/background/second/animation_view/animation_view.dart';
 import 'package:career_guide/views/background/second/animation_view/animation_view_controller.dart';
 import 'package:career_guide/views/background/second/navigation/navigation.dart';
+import 'package:career_guide/views/background/second/navigation/navigation_controller.dart';
 import 'package:flutter/material.dart';
 
 class AnimatedDateList extends StatefulWidget {
@@ -24,10 +26,12 @@ class AnimatedDateList extends StatefulWidget {
 }
 
 class _AnimatedDateListState extends State<AnimatedDateList>
-    with TickerProviderStateMixin {
+    with SingleTickerProviderStateMixin {
   final GlobalKey<AnimatedListState> key = GlobalKey<AnimatedListState>();
-  late AnimationController _textController;
+  final NavigationController _navigationController = NavigationController();
+  late AnimationController _controller;
   late Animation<double> _navigationScaleAnimation;
+  late AnimatedDateListAnimation _animatedDateListAnimation;
   final ScrollController _scrollController = ScrollController();
   final int _visibleItemCount = 8;
   final List<String?> _items = [];
@@ -36,36 +40,46 @@ class _AnimatedDateListState extends State<AnimatedDateList>
       AnimationViewController();
   Curve curve = Curves.easeOut;
   int _currentIndex = 0;
+  bool _animationStarted = false;
   @override
   void initState() {
     super.initState();
     _setupAnimation();
   }
 
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
   _setupAnimation() {
     widget.secondBackgroundController.addListener(() {
       if (widget.secondBackgroundController.status ==
           AnimationStatus.completed) {
-        _startAnimation();
+        _startVerticalTextAnimation();
       }
     });
     widget.secondBackgroundController.addListener(() {
       if (widget.secondBackgroundController.status ==
           AnimationStatus.dismissed) {
-        _textController.reverse();
+        _controller.reverse();
         _animationViewController.dismiss;
         key.currentState!
             .removeAllItems((context, animation) => const SizedBox());
         _items.clear();
+        _animationStarted = false;
+        _currentIndex = 0;
       }
     });
-    _textController = AnimationController(
-        vsync: this, duration: const Duration(milliseconds: 300));
+    _controller =
+        AnimationController(vsync: this, duration: const Duration(seconds: 1));
+    _animatedDateListAnimation = AnimatedDateListAnimation(_controller);
     _navigationScaleAnimation = Tween<double>(begin: .8, end: 1.0)
-        .animate(CurvedAnimation(parent: _textController, curve: curve));
+        .animate(CurvedAnimation(parent: _controller, curve: curve));
   }
 
-  _startAnimation() {
+  _startVerticalTextAnimation() {
     Future future = Future(() => null);
     for (var i = 0; i < (_itemCount + _visibleItemCount); i++) {
       future = future.then((value) {
@@ -73,15 +87,20 @@ class _AnimatedDateListState extends State<AnimatedDateList>
           int day = _itemCount - i;
           _addItem(i, "Nov $day");
         } else {
+          if (!_animationStarted) {
+            _startAnimations();
+            _animationStarted = true;
+          }
           _addItem(i, null);
         }
         return Future.delayed(const Duration(milliseconds: 100));
       });
     }
-    future.then((value) {
-      _textController.forward();
-      _animationViewController.forward;
-    });
+  }
+
+  _startAnimations() {
+    _controller.forward();
+    _animationViewController.forward;
   }
 
   _addItem(int index, String? value) {
@@ -101,6 +120,7 @@ class _AnimatedDateListState extends State<AnimatedDateList>
         _animationViewController.animate;
         _scrollController.animateTo(heightRatio * _currentIndex,
             duration: duration, curve: curve);
+        _navigationController.goNext;
         setState(() {});
       }
     }
@@ -111,6 +131,7 @@ class _AnimatedDateListState extends State<AnimatedDateList>
         _currentIndex--;
         _scrollController.animateTo(heightRatio * _currentIndex,
             duration: duration, curve: curve);
+        _navigationController.goBack;
         setState(() {});
       }
     }
@@ -158,16 +179,25 @@ class _AnimatedDateListState extends State<AnimatedDateList>
             },
           ),
           AnimatedBuilder(
-            animation: _textController,
+            animation: _controller,
             builder: (context, child) {
               return Transform(
                 transform: Matrix4.identity()
                   ..setEntry(3, 2, .001)
                   ..scale(1.0, _navigationScaleAnimation.value),
                 child: Opacity(
-                  opacity: _textController.value,
+                  opacity: _controller.value,
                   child: Navigation(
-                      goBack: goBack, goNext: goNext, heightRatio: heightRatio),
+                      itemCount: _itemCount,
+                      navigationController: _navigationController,
+                      goBack: goBack,
+                      goNext: goNext,
+                      heightRatio: heightRatio,
+                      titleAnimation: _animatedDateListAnimation.titleAnimation,
+                      subtitleAnimation:
+                          _animatedDateListAnimation.subtitleAnimation,
+                      titleScaleAnimation:
+                          _animatedDateListAnimation.titleScaleAnimation),
                 ),
               );
             },

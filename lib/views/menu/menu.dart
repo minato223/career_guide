@@ -35,6 +35,13 @@ class _MenuState extends State<Menu> with TickerProviderStateMixin {
     _initNavigation();
   }
 
+  @override
+  void dispose() {
+    _firstBackgroundAnimationController.dispose();
+    _secondBackgroundAnimationController.dispose();
+    super.dispose();
+  }
+
   _initNavigation() {
     _navigationItems = [
       BottomNavigationItem(icon: CupertinoIcons.home, onTap: _navigateToHome),

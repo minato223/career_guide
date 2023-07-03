@@ -12,9 +12,6 @@ List<Color> appColors = [
   Colors.red,
   Colors.blue,
   Colors.yellow,
-  // Colors.brown,
-  // Colors.cyan,
-  // Colors.green
 ];
 
 class SecondCardAnimation extends StatefulWidget {
@@ -35,12 +32,10 @@ class _SecondCardAnimationState extends State<SecondCardAnimation> {
   List<Color> colors = [...appColors];
   final List<Animation<double>> _appearAnimations = [];
   final List<Animation<double>> _disappearAnimations = [];
-  // final int _selectedIndex = 0;
   @override
   void initState() {
     super.initState();
     _setupAnimation();
-    // _startAppearAnimation();
   }
 
   _setupAnimation() {
@@ -72,38 +67,41 @@ class _SecondCardAnimationState extends State<SecondCardAnimation> {
           builder: (context, child) {
             return Stack(
               children: List.generate(colors.length, (index) {
-                double sigma = 0;
-                // double sigma = _selectedIndex == index ? 0 : 5;
-                return Stack(
-                  children: [
-                    Opacity(
-                      opacity: _appearAnimations[index].value,
-                      child: Container(
-                        transformAlignment: Alignment.center,
-                        transform: Matrix4.identity()
-                          ..setEntry(3, 2, .001)
-                          ..scale(_appearAnimations[index].value)
-                          ..translate(
-                              (_disappearAnimations[index].value * 300),
-                              (index * size.HEIGHT * .08),
-                              (getReverse(_disappearAnimations[index].value) *
-                                  40))
-                          ..rotateY(
-                              (pi * .5) * _disappearAnimations[index].value)
-                          ..rotateX(
-                              (-pi * .1) * _disappearAnimations[index].value),
-                        child: JobCard(
+                double sigma = index == 0 ? 0 : 5.0;
+                return Opacity(
+                  opacity: _appearAnimations[index].value,
+                  child: Container(
+                    transformAlignment: Alignment.center,
+                    transform: Matrix4.identity()
+                      ..setEntry(3, 2, .001)
+                      ..scale(_appearAnimations[index].value)
+                      ..translate(
+                          (_disappearAnimations[index].value * 300),
+                          (index * size.HEIGHT * .08),
+                          (getReverse(_disappearAnimations[index].value) * 40))
+                      ..rotateY((pi * .5) * _disappearAnimations[index].value)
+                      ..rotateX((-pi * .1) * _disappearAnimations[index].value),
+                    child: Stack(
+                      children: [
+                        JobCard(
                           id: index + widget.heroTagDiff,
                           isRecentView: true,
                         ),
-                      ),
+                        Positioned.fill(
+                          child: Container(
+                            clipBehavior: Clip.hardEdge,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(40)),
+                            child: BackdropFilter(
+                              filter: ImageFilter.blur(
+                                  sigmaX: sigma, sigmaY: sigma),
+                              child: const SizedBox(),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                    Positioned.fill(
-                        child: BackdropFilter(
-                      filter: ImageFilter.blur(sigmaX: sigma, sigmaY: sigma),
-                      child: const SizedBox(),
-                    ))
-                  ],
+                  ),
                 );
               }).reversed.toList(),
             );

@@ -18,6 +18,7 @@ class BadgeButtons extends StatelessWidget {
     double value = radius ?? 150;
     Color bgColor = color ?? AppColors.yellow;
     return Material(
+      color: Colors.transparent,
       child: SizedBox(
         height: value,
         width: value * 2,
@@ -48,13 +49,7 @@ class BadgeButtons extends StatelessWidget {
                   .map((item) => SizedBox(
                         width: value,
                         height: value,
-                        child: FittedBox(
-                            child: IconButton(
-                                onPressed: item.onTap,
-                                icon: Icon(
-                                  item.icon,
-                                  color: iconColor,
-                                ))),
+                        child: FittedBox(child: item.child),
                       ))
                   .toList(),
             ))
