@@ -1,16 +1,10 @@
-# career_guide
+# Career Guide
 
-A new Flutter project.
+Intégration de l'interface utilisateur d'une application de recherche de Job avec Flutter ❤️
 
-## Getting Started
+Si vous avez aimé, veuillez montrer votre appréciation en donnant une étoile sur le référentiel GitHub 🚀.
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+#### 🔥 Code source : https://github.com/minato223/career_guide
+#### ⛹️ UI Link: https://dribbble.com/shots/20789229-Job-Search-Mobile-IOS-App
+#### 👨‍💻 Contact for work: https://www.linkedin.com/in/lamine-diarra-a46504196/
+![Mino Chat](https://cdn.dribbble.com/userupload/5020129/file/original-f23157f5f2baef9ebd0b3f9ba665a22d.png?compress=1&resize=1600x1200)
